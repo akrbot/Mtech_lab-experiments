@@ -1,0 +1,251 @@
+---
+title: "Assignment 01"
+author: "Adithya KR"
+date: "2024-02-04"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### 1. Write an R code snippet to calculate the fourth root of the number 9876 and then find its exponential.(1 mark)  
+
+```{r echo=TRUE}
+forth_root <- 9876^(1/4)
+forth_root
+```
+```{r echo=TRUE}
+exponential <-exp(9876)
+exponential
+```
+### 2.Create a vector in R that follows this pattern: (5, 10, 15, 20, 25, 20, 15, 10, 5), where the numbers start at 5 and increase by 5 up to 25, and then decrease by 5 back down to 5.(1 mark)  
+
+```{r echo=TRUE}
+vec1 <- c(seq(from = 5,to = 25, by =5),seq(from = 20,to = 5, by =-5))
+vec1
+```
+### 3. Create a vector in R that contains the elements 10, 20, and 30, repeated in a pattern of 5 occurrences of 10, 7 occurrences of 20, and 9 occurrences of 30.(1 mark)  
+```{r echo=TRUE}
+vec2 <- c(rep(10,5),rep(20,7),rep(30,9))
+vec2
+```
+\pagebreak
+### 4. Write a program in R for a shipping company that calculates the total shipping cost based on the weight of the items. The shipping costs are tiered as follows: (2 marks)  
+*  For items weighing up to 10 kg, the shipping cost is 1500.
+*  For items weighing more than 10 kg but less than or equal to 20 kg, the shipping cost is 2500.
+* For items weighing more than 20 kg, the shipping cost is 4000 plus 500 for each kg over 20.
+```{r echo=TRUE}
+weight=21
+if (weight <=10){
+  cost=1500
+}else if (weight<=20){
+  cost=2500
+}else{
+  extra=(weight-20)
+  cost=4000+(extra*500)
+}
+cost
+```
+### 5. You have been given a dataset of the weekly revenue figures for a company over 4 weeks. Write an R program to compute and display the following:(2 marks)
+Sample Revenue Data:  
+revenue <- c(5000, 7000, 6500, 4800) 
+
+(a) Total revenue for the 4 weeks.
+(b) Average weekly revenue.
+(c) The week with the maximum revenue.
+(d) The week with the minimum revenue.
+
+```{r echo=TRUE}
+rev = c(5000, 7000, 6500, 4800)
+##Total revenue
+sum(rev)
+##Average revenue
+mean(rev)
+##minimum revenue 
+min(rev)
+##maximum revenue 
+max(rev)
+```
+### 6. Write a program in R that asks the user to enter their age and then provides health recommendations based on the following age groups:(2 marks)  
+
+* Children (up to 12 years): Emphasize outdoor play and balanced diet.
+* Teenagers (13-19 years): Focus on regular exercise and avoiding junk food. 
+* Adults (20-60 years): Recommend regular health check-ups and stress management.
+* Seniors (above 60 years): Suggest low-impact exercises and a diet rich in calcium and vitamins.
+
+```{r ,echo=TRUE}
+age = 43
+if(age<=12){
+  recom = "Emphasize outdoor play and balanced diet."
+}else if(13<=age & age<=19){
+  recom = "Focus on regular exercise and avoiding junk food."
+}else if(20<=age & age<=60){
+  recom = "Recommend regular health check-ups and stress management."
+}else {
+  recom = "Suggest low-impact exercises and a diet rich in calcium and vitamins."
+}
+print(recom)
+```
+### 7. Create an R program that takes a vector of daily currency values against the dollar for 10 days. Your program should:
+
+### a. Calculate the percentage fluctuation in the currency value from the start to the end of the month.
+```{r, echo = TRUE}
+vec = c(80,81,79,81.5,90,99,100,83.5,77,89)
+len = (length(vec))
+fluc = ((vec[len] - vec[1])/vec[1])*100
+print(fluc)
+```
+### b. Order the daily values in ascending order.
+```{r, echo=TRUE}
+sorted = sort(vec)
+print(sorted)
+```
+### c. Identify and display the top 5 days with the highest currency value and the bottom 5 days with the lowest value.(2 marks)  
+```{r, echo=TRUE}
+bot5val = head(sorted,5)
+top5val = tail(sorted,5)
+top5days = which(vec>max(bot5val))#all values greater than the max value of bottom5
+bot5days = which(vec<min(top5val))#all values lesser  than the min value of top5
+```
+```{r, echo=TRUE}
+#highest 5 currency values
+top5val
+#top 5 days with highest currency values
+top5days
+#lowest 5 currency values
+bot5val
+#bottom 5 days with lowest currency values
+bot5days
+```
+### 8. Write an R program that simulates a bank transaction history:(2 Marks)
+
+### a. Create a numeric vector transactions containing a mix of positive and negative values, representing deposits and withdrawals.  
+```{r, echo=TRUE}
+transc_list = c(100,-20,90,190,-200,-800,1000)
+transc_list
+```
+### b. Calculate the total balance by summing the elements of the transactions vector.  
+```{r, echo=TRUE}
+total = sum(transc_list)
+total
+```
+### c. Identify the months where the balance was negative.
+```{r ,echo=TRUE}
+cur_bal = 0
+for (i in 1:length(transc_list)){
+  cur_bal = cur_bal + transc_list[i]
+  if(cur_bal < 0){
+    cat("month with negative balance = ",i)
+  }
+}
+```
+### d. Create a new vector positive_transactions containing only the positive values from the transactions vector.
+```{r, echo=TRUE}
+pos_transc = transc_list[transc_list>0]
+pos_transc
+```
+
+### 9. Write a function which takes a single argument which is a matrix. The function should return a matrix which is the same as the function argument but every odd number is tripled and even number doubled on the given matrix.(1 mark)
+
+```{r, echo=TRUE}
+modifyMatrix <-function(input_matrix){
+  output_matrix = input_matrix
+  output_matrix[sapply(input_matrix, function(x) x %% 2 == 1)] =
+    input_matrix[sapply(input_matrix, function(x) x %% 2 == 1)] * 3
+  output_matrix[sapply(input_matrix, function(x) x %% 2 == 0)] = 
+    input_matrix[sapply(input_matrix, function(x) x %% 2 == 0)] * 2
+  return(output_matrix)
+  
+}
+original_matrix = matrix(c(1,2,3,4,5,6,7,8,9),nrow = 3,ncol = 3,byrow = TRUE)
+modified_matrix = modifyMatrix(original_matrix)
+```
+
+```{r ,echo=TRUE}
+#original_matrix
+original_matrix
+#output matrix
+modified_matrix
+```
+\pagebreak
+### 10. For this exercise, you are provided with a vector vec2 containing the numbers 23, 15, 42, 55, 92.(3 marks)
+vec2 <- c(23, 15, 42, 55, 92)
+
+### a. Use a for loop to print each number along with its logarithm (base 10) and square root
+```{r, echo=TRUE}
+vec2 = c(23, 15, 42, 55, 92)
+for(i in vec2){
+  cat("number: ",i," logarithm: ",log10(i), " square_root: ", sqrt(i), "\n")
+}
+```
+### b. Achieve the same result using a while loop
+```{r ,echo=TRUE}
+i = 1
+while(i<=length(vec2)){
+  cat("number: ",vec2[i]," logarithm: ",log10(vec2[i]), " square_root: ", sqrt(vec2[i]), "\n")
+  i = i+1
+}
+```
+### c. Achieve the same result without using an explicit loop
+
+```{r ,echo=TRUE}
+result = data.frame(number = vec2,logarithm = log(vec2), square_root = sqrt(vec2))
+result
+```
+### 12. Calculate the following by writing code snippets:(2 marks)
+* $$\sum_{i=1}^{50}(i^3+4i^2-8i)$$  
+* $$\sum_{i=1}^{90}(\frac{2^i}{i^2} + \frac{3^i}{i^3})$$  
+
+```{r ,echo= TRUE}
+#equation 1
+total_sum = 0
+for (i in 1:50){
+  total_sum = total_sum + i^3 +4*i^2 - 8*i
+}
+total_sum
+```
+
+```{r, echo=TRUE}
+#equation 2
+total_sum = 0
+for (i in 1:90){
+  total_sum = total_sum + (2^i/i^2)+(3^i/i^3)
+}
+total_sum
+```
+### 13. Consider the following R code snippet that utilizes a switch statement:(1 marks)
+```{r ,echo = TRUE, results=FALSE}
+calculate_operation <- function(operation, a, b) {
+result <- switch(
+operation,
+"add" = a + b,
+"subtract" = a - b,
+"multiply" = a * b,
+"divide" = a / b,
+stop("Invalid operation")
+)
+return(result)
+}
+output <- calculate_operation("multiply", 5, 3)
+print(output)
+```
+
+### Modify the function to include an additional operation “power”, which calculates a raised to the power of b. Show the modified function and provide an example of how it would be called.  
+
+```{r ,echo = TRUE}
+calculate_operation <- function(operation, a, b) {
+result <- switch(
+operation,
+"add" = a + b,
+"subtract" = a - b,
+"multiply" = a * b,
+"divide" = a / b,
+"power" = a^b,
+stop("Invalid operation")
+)
+return(result)
+}
+output <- calculate_operation("power", 5, 3)
+print(output)
+```

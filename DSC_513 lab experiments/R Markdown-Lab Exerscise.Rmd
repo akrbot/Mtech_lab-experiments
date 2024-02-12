@@ -1,0 +1,68 @@
+---
+title: "R Markdown-Lab Exercise"
+author: "Adithya KR"
+date: "01/28/2024"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+RMarkdown is a powerful tool for data analysis and reporting in R. It allows you to create dynamic documents
+that combine code, rendered output (like plots), and narrative text.
+
+## Benefits of R Markdown
+* __Reproducibility__: By including R code within the document, the analysis can be easily reproduced.
+* __Dynamic Reporting__: Update your data or analysis, and the results in the document update automatically.
+* __Multiple Formats__: RMarkdown documents can be converted to a variety of formats including HTML,
+PDF, and Word
+
+## Example: Data Analysis with the mtcars Dataset
+Let’s demonstrate some basic functionalities of RMarkdown using the mtcars dataset.
+
+
+### Loading Data
+data(mtcars)
+
+## Summary Statistics
+Here’s a quick look at the summary statistics of the <span style="font-size: 12px;">`mtcars`</span> dataset.
+```{r mtcars}
+summary(mtcars)
+```
+
+## Plotting Data
+Creating a plot to visualize the data is straightforward. For example, we can create a scatter plot of mpg
+(Miles/(US) gallon) against wt (Weight (1000 lbs)).  
+
+
+```{r}
+plot(mtcars$wt, mtcars$mpg, main="Miles per Gallon vs Car Weight",
+     xlab="Weight (1000 lbs)", ylab="Miles/(US) gallon")
+```
+\pagebreak
+
+## Including Tables
+This is an example of including tables in RMarkdown using the mtcars dataset.
+
+```{r echo = FALSE}
+library(knitr)
+kable(mtcars[1:6,],caption = "Table 1: A subset of the mtcars dataset")
+```
+
+For example, __bold text__ and _italic text_ are easy to add. You can also create lists:  
+
+* Item 1
+* Item 2
+* Item 3
+
+Or numbered lists:  
+
+1. First number
+2. Second number
+3. Third number
+
+
+
