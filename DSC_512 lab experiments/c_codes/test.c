@@ -1,27 +1,20 @@
-#include<stdio.h>
-#include<conio.h>
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_NAME_LENGTH 100
 
 int main() {
-    int elements[3]; // Array to store the elements
-    int numElements = 0; // Variable to keep track of the number of elements entered
+    char name[MAX_NAME_LENGTH];
 
-    printf("Enter three elements:\n");
+    printf("Enter name: ");
+    fgets(name, MAX_NAME_LENGTH, stdin); // Read string with spaces
 
-    // Read input from the user
-    while (numElements < 3) {
-        if (scanf("%d", &elements[numElements]) == 1) {
-            numElements++; // Increment the count of elements
-        } else {
-            printf("Invalid input. Please enter an integer.\n");
-            // Clear input buffer in case of non-integer input
-            while (getchar() != '\n');
-            // Exit the program if input is invalid
-            return 1;
-        }
-    }
-
-    // Print the elements if three are entered
-    printf("You have entered three elements: %d, %d, %d\n", elements[0], elements[1], elements[2]);
+    // Remove trailing newline character, if present
+    size_t length = strlen(name);
+    if (name[length - 1] == '\n')
+        name[length - 1] = '\0';
+    
+    printf("Name entered: %s\n", name);
 
     return 0;
 }
