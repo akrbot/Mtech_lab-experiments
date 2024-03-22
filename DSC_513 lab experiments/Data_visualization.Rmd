@@ -1,0 +1,108 @@
+---
+title: "Data Visualization"
+author: "Adithya KR"
+date: "3/12/2024"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Dataset: mtcars In this assignment, we will explore advanced data visualization techniques using the mtcars dataset, which contains information about various car models. Answer the following questions based on the provided dataset and visualization techniques.
+
+### 1.Discuss the importance of understanding the structure of the mtcars dataset for effective data visualization. Provide examples of variables in the dataset that would be suitable for different types of plots.
+
+```{r echo=TRUE}
+install.packages("dplyr")
+install.packages("ggplot2")
+```
+```{r echo=TRUE}
+library(ggplot2)
+library(dplyr)
+```
+
+reading Dataset
+```{r echo=TRUE}
+data(mtcars)
+head(mtcars)
+dim(mtcars)
+```
+### our dataset has 32 rows and 11 columns Understanding the structure of the mtcars dataset is crucial for effective data visualization because it helps in:
+* Choosing the Right Visualization Technique
+* Highlighting Relationships
+* Identifying Distribution and Trends
+* Communicating Insights Effectively
+* Histogram: The mpg variable is a continuous numerical variable, making it suitable for a histogram to
+visualize its distribution.
+* Scatter Plot: To examine the relationship between two continuous variables, such as mpg and wt
+(weight), a scatter plot can be used.
+* Bar Plot: For categorical variables or discrete numerical variables, a bar plot is effective.
+* cyl (the number of cylinders), which is a discrete numerical variable, a bar plot can show the count of
+cars for each cylinder category
+* Box Plot: To explore the distribution of a continuous variable across different categories of another
+variable, box plots are very useful. For example, comparing the distribution of mpg across different
+levels of cyl
+* Line Plot : the improvement in mpg of a particular model over successive years
+
+### 2. Create a scatter plot comparing the relationship between horsepower (hp) and engine displacement (disp) across different car models.
+
+```{r echo=TRUE}
+mtcars%>%
+ggplot(aes(x = hp, y = disp)) +
+geom_point()+
+labs (title = "Horsepower (hp) vs Engine Displacement (disp)")
+```
+
+### 3. Analyze the effect of putting the x-axis (horsepower) on a log scale in the scatter plot. How does this transformation change the interpretation of the relationship between horsepower and miles per gallon (mpg)?
+
+```{r echo=TRUE}
+mtcars%>%
+ggplot(aes(x=hp,y=mpg))+
+geom_point()+
+labs (title = "Horsepower (hp) vs miles per gallon (mpg)")
+
+```
+
+### with log_scale
+```{r echo=TRUE}
+mtcars%>%
+ggplot(aes(x=hp,y=mpg))+
+geom_point()+
+scale_x_log10()+
+labs (title = "Horsepower (hp) vs miles per gallon (mpg)")
+```
+
+Logarithmic scale can reduce the visual impact of outliers, making it easier to focus on the main things.
+
+### 4. Utilizing the cyl variable (number of cylinders), add color to the scatter plot comparing horsepower and miles per gallon.
+```{r echo=TRUE}
+mtcars%>%
+ggplot(aes(x=hp,y=mpg,color=cyl))+
+geom_point()+
+labs (title = "Horsepower (hp) vs miles per gallon (mpg)")
+
+```
+
+### 5. Extend the scatter plot by incorporating both size (representing weight of the car) and color(representing the number of cylinders). Analyze the combined effect of size and color on the interpretation of the relationship between horsepower, miles per gallon, and other variables.
+```{r echo=TRUE}
+mtcars%>%
+ggplot(aes(x=hp,y=mpg,color=cyl,size=wt))+
+geom_point()+
+labs (title = "Horsepower (hp) vs miles per gallon (mpg)")
+```
+
+As the size and number of cylinders in a car increase, its horsepower tends to rise, but its miles per gallon (mpg) decrease. Conversely, when the mpg is high, the horsepower is typically lower, with fewer cylinders and a smaller overall size.
+
+### 6. Create a faceted scatter plot comparing the relationship between horsepower and miles per gallon for different car manufacturers (e.g., am variable representing automatic/manual transmission).
+
+```{r echo=TRUE}
+mtcars%>%
+ggplot(aes(x=hp,y=mpg))+
+geom_point()+
+facet_wrap(~am)+
+labs (title = "Relationship between Horsepower and Miles per Gallon by Transmission Type")
+```
+
+
+

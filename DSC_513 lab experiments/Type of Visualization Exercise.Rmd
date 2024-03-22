@@ -1,0 +1,97 @@
+---
+title: "Type of Visualizations Exercise"
+author: "Adithya KR"
+date: "3/18/2024"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Dataset: Gapminder
+```{r echo=TRUE}
+install.packages("dplyr")
+library(dplyr)
+install.packages("ggplot2")
+library(ggplot2)
+install.packages("gapminder")
+library(gapminder)
+```
+\pagebreak 
+
+### 1. Create a line plot showing the median GDP per capita over time.
+```{r echo=TRUE}
+by_year <- gapminder %>%
+    group_by(year) %>%
+    summarize(medianGdpPercap = median(gdpPercap))
+ggplot(by_year, aes(x = year, y = medianGdpPercap)) +
+    geom_line()+geom_point()+labs(title="Median GDP per capita over time")
+```
+\pagebreak 
+
+### 2. Create a line plot showing the change in median GDP per capita by continent over time.
+```{r echo=TRUE}
+by_year_continent <- gapminder %>%
+  group_by(year, continent) %>%
+  summarize(medianGdpPercap = median(gdpPercap))
+
+ggplot(by_year_continent, aes(x = year, y = medianGdpPercap, color = continent)) +
+  geom_line()+geom_point()+labs(title="Median GDP per capita by continent over time")
+
+```
+\pagebreak 
+
+### 3. Create a bar plot showing the median GDP per capita for each continent in the year 1952.
+```{r echo=TRUE}
+by_continent <- gapminder %>%
+  filter(year == 1952) %>%
+  group_by(continent) %>%
+  summarize(medianGdpPercap = median(gdpPercap))
+ggplot(by_continent, aes(x = continent, y = medianGdpPercap,fill=continent)) +
+  geom_col()+labs(title="Median GDP per capita for each continent 1952")
+
+```
+\pagebreak 
+
+### 4. Filter for observations in the Oceania continent in the year 1952. Create a bar plot comparing the GDP per capita between Australia and New Zealand.
+```{r echo=TRUE}
+oceania_1952 <- gapminder %>%
+  filter(continent == "Oceania", year == 1952)
+ggplot(oceania_1952, aes(x = country, y = gdpPercap,fill=country)) +
+  geom_col()+labs(title="GDP
+per capita between Australia and New Zealand")
+```
+\pagebreak 
+
+### 5. Create a histogram showing the distribution of country populations (in millions) in the year 1952.
+```{r echo=TRUE}
+gapminder_1952 <- gapminder %>%
+filter(year == 1952)
+ggplot(gapminder_1952, aes(x = pop/1e6)) +
+geom_histogram(binwidth = 10,color="blue")+labs(title = "Distribution of country populations 
+                                                (in millons) in the year 1952")
+```
+\pagebreak 
+
+### 6. Create a histogram similar to the previous one but with the x-axis (population) on a logarithmic scale.
+```{r echo=TRUE}
+gapminder_1952 <- gapminder %>%
+filter(year == 1952)
+ggplot(gapminder_1952, aes(x = pop /1e6)) +
+geom_histogram(fill="orange") +
+scale_x_log10()
+```
+\pagebreak 
+
+### 7. Create a boxplot comparing the distribution of GDP per capita among continents in the year 1952
+```{r echo=TRUE}
+gapminder_1952 <- gapminder %>%
+filter(year == 1952)
+ggplot(gapminder_1952, aes(x = continent, y = gdpPercap)) +
+geom_boxplot() +
+scale_y_log10()
+
+```
+
