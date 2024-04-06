@@ -57,7 +57,6 @@ struct BTnode* searchNode(struct BTnode* root, char data) {
 struct BTnode *insert(struct BTnode *rootNode, char value, char left, char right){
     // struct BTnode* result = searchNode(rootNode, value);
     struct BTnode* result = searchNode(rootNode, value);
-    printf("Found: %c\n", result->data);
     if(left != '0')
         result->leftNode = initTree(result->leftNode, left);
     if(right != '0')
