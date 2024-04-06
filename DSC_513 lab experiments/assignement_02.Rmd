@@ -1,0 +1,244 @@
+---
+title: "2024MCS110023-Assignment-02"
+author: "ADITHYA KR"
+date: "04/06/2024"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)    
+```
+
+```{r}
+library(ggplot2)
+
+```
+
+```{r}
+data("airquality")
+
+```
+
+
+
+```{r}
+# Basic preprocessing
+airquality <- na.omit(airquality) # Removing NA values
+```
+
+```{r}
+
+head(airquality)
+```
+
+
+
+
+**1. Obtain the plot of daily ozone levels by month as shown below:(1 Marks)**
+
+
+```{r}
+ggplot(airquality, aes(x = Day, y = Ozone)) +
+        ggtitle("Daily Ozone Levels by Month") +
+        labs(x = "Day of the month", y = "Ozone (ppb)") +
+        scale_x_continuous(breaks = seq(0, 30, 10))+ facet_wrap(~Month)+geom_line(color="red")
+
+```
+
+
+**2.Obtain the plot of ozone distribution by month as shown below:(2 Marks)**
+
+
+```{r}
+ggplot(airquality, aes(x=Month, y=Ozone,fill=factor(Month))) +geom_boxplot()+
+  labs(title="Ozone Distribution by Month",x = "Month", y = "Ozone(ppb)")
+
+```
+
+
+**3. Obtain the plot of Ozone Levels vs. Wind Speed as shown below:(2 Marks)**
+
+
+```{r}
+ggplot(airquality, aes(x = Wind, y = Ozone,color = Month)) + geom_point()+scale_x_log10() + 
+  labs(title = "Ozone Levels Vs Wind Speed",x = "Wind speed(mph) ",y = "Ozone(pph)")
+
+```
+
+
+**4. Using the airquality dataset in R, explore and visualize the monthly distribution of wind speeds, highlighting potential variations and outliers from May to September?(2 marks)**
+
+
+```{r}
+ggplot(airquality, aes(x=Month, y=Wind,fill=factor(Month))) +geom_boxplot()  + 
+  labs(title="Monthly Distribution of Wind Speed",x="Month", y="Wind Speed mph")
+
+```
+```{r}
+
+out<-boxplot.stats(airquality$Wind)$out
+boxplot(airquality$Wind,
+ylab = "Wind",
+main = "wind speeds")
+mtext(paste("Outliers: ", paste(out, collapse = ", ")))
+
+```
+
+
+**5. Obtain the result shown below:(1 Mark)**
+
+
+```{r}
+# Convert Month column to a factor for easier grouping
+airquality$Month <- factor(airquality$Month)
+```
+
+```{r}
+# Calculate mean, median, and standard deviation of ozone and temperature monthly-wise
+summary_stats <- aggregate(cbind(Ozone, Temp) ~ Month, data = airquality, FUN = function(x) 
+  c(mean = mean(x, na.rm = TRUE), median = median(x, na.rm = TRUE), sd = sd(x, na.rm = TRUE)))
+print(summary_stats)
+```
+
+```{r}
+Month <- c(5,6,7,8,9)
+Mean_Ozone <-c(23.61538,29.44444,59.11538,59.96154,31.44828) 
+Median_Ozone <- c(18,23,60,52,23) 
+SD_Ozone <- c(22.22445,18.20790,31.63584,38.68121,24.14182) 
+Mean_Temp <- c(66.73077,78.22222,83.88462,83.96154,76.89655)
+Median_Temp <- c(66,77,84,82,76) 
+SD_Temp <- c(6.533346,7.838651,4.439161,6.666218,8.503549) 
+df1 <- data.frame(Month ,Mean_Ozone, Median_Ozone, SD_Ozone, Mean_Temp, Median_Temp, SD_Temp ) 
+df1
+```
+
+
+**6.On days where the Ozone levels are above 100, investigate the relationship between Ozone and Temperature. Create a scatter plot of Ozone vs. Temperature for days with Ozone levels above 100.(2 marks)**
+
+
+
+```{r}
+high_ozone_days <- airquality[airquality$Ozone > 100, ]
+x<-high_ozone_days$Temp
+y<-high_ozone_days$Ozone
+ggplot(high_ozone_days,aes(x=Temp,y=Ozone))+geom_point(color="Blue")+labs(x="Temperature",y="O
+zone Level",title = "Scatter Plot of Ozone vs. Temperature ", subtitle="For Days with Ozone Levels above 100")
+     
+```
+
+**7. Determine the month with the highest average temperature using the airquality dataset in R, and display only that month along with its average temperature?(1 Mark)**
+
+
+```{r}
+data(airquality)
+
+# Aggregate the data by month and calculate the average temperature for each month
+monthly_avg_temp <- aggregate(Temp ~ Month, data = airquality, FUN = mean)
+
+# Find the row with the highest average temperature
+max_temp_row <- which.max(monthly_avg_temp$Temp)
+
+# Extract the month with the highest average temperature and its corresponding temperature
+highest_avg_temp_month <- monthly_avg_temp$Month[max_temp_row]
+highest_avg_temp_value <- monthly_avg_temp$Temp[max_temp_row]
+
+# Display the month with the highest average temperature and its average temperature
+cat("Month with the highest average temperature:", highest_avg_temp_month, "\n")
+cat("Average temperature:", round(highest_avg_temp_value, 2))
+
+```
+
+
+**8. What is the correlation between Solar Radiation and Ozone concentration?(1 Mark)**
+
+
+
+```{r}
+
+airquality_clean <- na.omit(airquality[, c("Solar.R", "Ozone")])
+
+
+correlation <- cor(airquality_clean$Solar.R, airquality_clean$Ozone)
+
+
+print(paste("Correlation between Solar Radiation and Ozone concentration:", round(correlation, 2)))
+
+```
+
+**9. Obtain the plot of Monthly Distribution of Wind Speeds in New York as shown below:(3 Marks)**
+
+
+
+```{r}
+
+ggplot(airquality, aes(reorder(Month,Wind,FUN=median), y=Wind, fill=factor(Month))) +geom_boxplot()+ labs(title="Monthly Distribution of Wind Speeds in NewYork",x = "Month", y = 
+ "Wind Speed (mph)")+geom_jitter(size=0.4, alpha=0.7)
+```
+
+**10. Create a new data frame containing the average Ozone concentration for each month. Arrange the months in descending order based on the average Ozone concentration.(1 Mark)**
+
+
+```{r}
+# Load the airquality dataset
+data(airquality)
+
+# Aggregate the data by month and calculate the average Ozone concentration for each month
+monthly_avg_ozone <- airquality %>%
+  group_by(Month) %>%
+  summarise(avg_ozone_concentration = mean(Ozone, na.rm = TRUE))
+
+# Arrange the months in descending order based on the average Ozone concentration
+monthly_avg_ozone <- monthly_avg_ozone[order(-monthly_avg_ozone$avg_ozone_concentration), ]
+
+# Print the resulting data frame
+print(monthly_avg_ozone)
+```
+
+
+**11. Obtain the plot of Distribution of Solar Radiation by Month as shown below:(2 Marks)**
+
+
+
+```{r}
+data(airquality)
+
+# Convert the 'Month' column to a factor with appropriate levels
+
+airquality$Month <- factor(airquality$Month, levels = 1:12,
+                           labels = month.abb)
+# Create the plot with boxplot and jittered points
+ggplot(airquality, aes(x = Month, y = Solar.R)) +
+  geom_boxplot(fill = "skyblue", color = "black", alpha = 0.7) +
+  geom_jitter(aes(color = Month), width = 0.2, alpha = 0.5) +
+  labs(title = "Distribution of Solar Radiation by Month",
+       x = "Month", y = "Solar Radiation") +
+  theme_minimal()+scale_color_discrete(name = "Month") 
+
+
+```
+
+
+**12.Obtain the plot of Distribution of Wind Speeds by Month as shown below:(2 Marks)**
+
+
+
+```{r}
+ggplot(airquality,aes(x=Wind))+geom_histogram(aes(y = ..density..),binwidth = 0.5,    
+fill="Green", color="black")+facet_wrap(~Month)+geom_density(lwd = 1.2,linetype = 2,  
+colour = 6)+labs(title="Distribution of Wind speeds by Month",x="Wind Speed",y="Density")                                                                                        
+```
+
+
+
+
+
+
+
+
+
+
+
